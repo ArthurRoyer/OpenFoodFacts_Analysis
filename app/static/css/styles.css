@@ -79,6 +79,7 @@ header {
     z-index: 100;
     width: 100%;
     color:#fff;
+    z-index:9999999;
 }
 
 .mobile-menu a {
@@ -99,6 +100,9 @@ header {
     .burger-menu {
         display: block; /* Affiche le menu burger */
     }
+    .mobile-menu {
+        display:flex;
+    }
 }
 
 @media (min-width: 768px) {
@@ -107,6 +111,9 @@ header {
     }
     .burger-menu {
         display: none; /* Affiche le menu burger */
+    }
+    .mobile-menu {
+        display:none;
     }
 }
 
