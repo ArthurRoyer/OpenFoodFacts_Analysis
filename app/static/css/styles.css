@@ -101,11 +101,11 @@ header {
         display: block; /* Affiche le menu burger */
     }
     .mobile-menu {
-        display:flex;
+        display:none;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .menu {
         display: flex; /* Cache le menu principal sur mobile */
     }
