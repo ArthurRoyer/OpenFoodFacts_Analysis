@@ -36,7 +36,7 @@ Cloner le dépôt :
 
 bash
 Copier le code
-git clone https://github.com/votre-utilisateur/nutri-score-prediction.git
+git clone [https://github.com/votre-utilisateur/nutri-score-prediction.git](https://github.com/ArthurRoyer/OpenFoofFacts_Analysis.git)
 cd nutri-score-prediction
 Charger les données : Importez le fichier cleaned_data.csv dans un DataFrame et effectuez les traitements de nettoyage initiaux.
 
