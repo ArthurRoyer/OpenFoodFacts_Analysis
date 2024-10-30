@@ -1,4 +1,4 @@
-# Projet de Prédiction du Nutri-Score
+# Projet de Prédiction du Nutri-Score avec Flask et Machine Learning
 
 ## Description
 
@@ -18,7 +18,7 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
 
     ```bash
     git clone https://github.com/ArthurRoyer/OpenFoofFacts_Analysis.git
-    cd nutriscore-flask-app
+    cd OpenFoofFacts_Analysis
     ```
 
 2. Installez les dépendances nécessaires :
