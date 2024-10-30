@@ -127,8 +127,6 @@ def results():
         category_index = category_mapping[selected_name]
         new_data[0, category_index] = 1  # On définit cette catégorie sur 1
 
-    print("AXEEEEEEEEEEEEEl")
-    print(new_data)
 
     # Normaliser les nouvelles données avec le scaler
     new_data_scaled = scaler.transform(new_data)
@@ -197,9 +195,6 @@ def results():
     pnns_groups_2_Waters_and_flavored_waters = False
     pnns_groups_2_unknown = False
 
-    print("WAAAAAAAAAAAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA !!!")
-    print("Valeur de selected_name:", selected_name)
-
     # Créer un tableau avec les données du formulaire
     new_data = np.array([[energy_kcal, fat, saturated_fat, sugars, fiber, proteins, salt, fruits_vegetables_nuts_estimate, pnns_groups_2_Appetizers,
     pnns_groups_2_Artificially_sweetened_beverages,
@@ -226,9 +221,6 @@ def results():
 
     if selected_name in new_data:
         new_data[selected_name] = True
-
-    print('AXEEEEEEEEEEEEEl')
-    print(new_data)
 
     # Normaliser les nouvelles données avec le scaler
     new_data_scaled = scaler.transform(new_data)
