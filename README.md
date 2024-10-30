@@ -1,4 +1,4 @@
-# Projet de Prédiction du Nutri-Score avec Flask et Machine Learning
+# Projet de Prédiction du Nutri-Score
 
 ## Description
 
