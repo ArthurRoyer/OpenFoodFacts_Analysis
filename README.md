@@ -1,74 +1,100 @@
-markdown
-Copier le code
-# Prédiction du Nutri-Score avec un Arbre de Régression
+# Projet de Prédiction du Nutri-Score avec Flask et Machine Learning
 
-Ce projet implémente un modèle de régression supervisé pour prédire le `nutriscore_score` de produits alimentaires, basé sur leurs caractéristiques nutritionnelles. Le modèle utilise un arbre de régression de type CART (Classification And Regression Trees) pour effectuer les prédictions.
+## Description
 
-## Contexte et Objectif
+Ce projet consiste à développer une application web de prédiction du Nutri-Score pour des produits alimentaires, en utilisant **Flask** comme framework web et **Scikit-learn** pour le Machine Learning. Le Nutri-Score est un indicateur nutritionnel allant de "A" (bon pour la santé) à "E" (à limiter). Le but de cette application est d’offrir une estimation du Nutri-Score à partir des informations nutritionnelles d'un produit.
 
-La régression est une technique d'apprentissage supervisé visant à modéliser la relation entre une variable cible continue et plusieurs variables indépendantes. L'objectif de ce projet est de :
-1. Charger et préparer un ensemble de données de produits alimentaires.
-2. Utiliser un modèle de régression pour prédire le `nutriscore_score`.
-3. Évaluer la précision des prédictions du modèle.
+## Fonctionnalités
 
-## Structure des Données
+1. **Prédiction du Nutri-Score** : Les utilisateurs peuvent entrer des informations nutritionnelles d’un produit et obtenir une estimation du Nutri-Score.
+2. **Catégorisation automatique** : Sélection de la catégorie d'aliment pour affiner les prédictions.
+3. **Évaluation de précision** : Précision du modèle basée sur les scores d’erreur comme le Mean Absolute Error (MAE), le Mean Squared Error (MSE), et le R2 Score.
 
-Le fichier de données, `cleaned_data.csv`, contient les informations nutritionnelles de divers produits, incluant des variables comme `energy-kj_100g`, `fat_100g`, `sugars_100g`, et `nutriscore_grade`.
+## Installation et Exécution
 
-### Colonnes sélectionnées pour la régression
+### Installation
 
-- `nutriscore_score`: la variable cible, représentant le score Nutri-Score.
-- Variables indépendantes sélectionnées : `energy-kj_100g`, `fat_100g`, `saturated-fat_100g`, `sugars_100g`, `fiber_100g`, `proteins_100g`, `salt_100g`, `fruits-vegetables-nuts-estimate-from-ingredients_100g`.
+1. Clonez ce repository :
 
-## Prérequis
+    ```bash
+    git clone https://github.com/ArthurRoyer/OpenFoofFacts_Analysis.git
+    cd nutriscore-flask-app
+    ```
 
-- Python 3.x
-- Bibliothèques Python :
-  - pandas
-  - scikit-learn
+2. Installez les dépendances nécessaires :
 
-Vous pouvez installer les dépendances nécessaires avec :
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-pip install pandas scikit-learn
+3. Générez le dataset `cleaned_data.csv` à l'aide des fichiers .ipynb et placez-le dans le répertoire racine de l’application.
 
-Instructions d'Exécution
-Cloner le dépôt :
+4. Exécutez l'application Flask :
 
-bash
-Copier le code
-git clone [https://github.com/votre-utilisateur/nutri-score-prediction.git](https://github.com/ArthurRoyer/OpenFoofFacts_Analysis.git)
-cd nutri-score-prediction
-Charger les données : Importez le fichier cleaned_data.csv dans un DataFrame et effectuez les traitements de nettoyage initiaux.
+    ```bash
+    python run.py
+    ```
 
-python
-Copier le code
-import pandas as pd
-df = pd.read_csv("cleaned_data.csv", sep=',', on_bad_lines='skip')
-Préparer les données :
+5. Rendez-vous sur `http://127.0.0.1:5000` dans votre navigateur pour accéder à l’application.
 
-Supprimer les colonnes inutiles pour la régression.
-Effectuer un encodage one-hot sur la colonne nutriscore_grade.
+## Structure du Projet
 
-Entraîner le modèle :
+- `app/` : Contient les fichiers de configuration Flask et le code de l'application.
+  - `routes.py` : Définit les routes de l'application (prediction et results).
+  - `graphs.py` : Génère les visualisations pour les prédictions.
+- `static/` : Contient les fichiers statiques (CSS, images).
+- `templates/` : Contient les templates HTML pour l’interface utilisateur.
+  - `predict.html` : Formulaire pour entrer les données d’un produit.
+  - `results.html` : Affichage des résultats de la prédiction.
 
-Séparer les données en ensembles d'entraînement et de test.
-Normaliser les données.
-Entraîner un arbre de régression.
+## Modèle de Machine Learning
 
+Le modèle utilisé pour la prédiction est un **Gradient Boosting Regressor**, optimisé pour minimiser l'erreur d'estimation du Nutri-Score. Voici les étapes de préparation des données et d’entraînement du modèle :
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.tree import DecisionTreeRegressor
+1. **Préparation des données** :
+   - Les données d’origine sont chargées depuis un fichier CSV (`cleaned_data.csv`).
+   - La colonne cible pour la prédiction est `nutriscore_score`.
+   - Transformation des variables catégorielles avec des variables indicatrices (one-hot encoding) pour améliorer la précision du modèle.
 
-Évaluer le modèle : Utilisez les métriques suivantes pour évaluer les performances :
+2. **Normalisation** : Les caractéristiques sont normalisées via un `MinMaxScaler` pour garantir une échelle uniforme entre les différentes caractéristiques.
 
-Erreur absolue moyenne (MAE)
-Erreur quadratique moyenne (MSE)
-Coefficient de détermination (R²)
-Résultats
-Le modèle a montré de bonnes performances avec :
+3. **Modèle** : Nous avons utilisé un **Gradient Boosting Regressor** avec les hyperparamètres suivants :
+   - `learning_rate=0.05` pour réduire le pas d’apprentissage.
+   - `n_estimators=300` pour augmenter le nombre d’estimateurs.
+   - `max_depth=3` pour limiter la profondeur des arbres et éviter le surapprentissage.
 
-MAE : 0.41
-MSE : 0.99
-R² : 0.98
-Ces résultats indiquent une faible erreur de prédiction et une haute précision du modèle.
+### Prédiction et Evaluation
+
+Le modèle effectue une prédiction du score, qui est ensuite converti en une lettre (`A`, `B`, `C`, `D`, ou `E`) via une fonction `score_to_grade` :
+   - `A` : score <= -1
+   - `B` : 0 <= score <= 2
+   - `C` : 3 <= score <= 10
+   - `D` : 11 <= score <= 18
+   - `E` : score > 18
+
+### Résultats
+
+Les résultats de la prédiction sont affichés sous la forme :
+- **Score prédictif** : Un score numérique est affiché pour l’utilisateur, en fonction des données saisies.
+- **Nutri-Score** : La note Nutri-Score est donnée sous forme de lettre (A à E), permettant une évaluation rapide et claire.
+
+## Interface Utilisateur
+
+- **predict.html** : Formulaire où les utilisateurs saisissent les informations nutritionnelles du produit. Une option permet également de choisir la catégorie de produit pour affiner la prédiction.
+- **results.html** : Affiche la prédiction de Nutri-Score et le score associé.
+- **Modal d’avertissement** : Si certains champs sont laissés vides, une fenêtre modale avertit l’utilisateur que cela pourrait affecter le calcul.
+
+## API Flask
+
+Le fichier `routes.py` contient l’API pour les fonctionnalités principales :
+- **Route `/`** : Renvoie la page d’accueil avec les graphiques de visualisation.
+- **Route `/predict`** : Affiche le formulaire de prédiction.
+- **Route `/results`** : Prend les données du formulaire et retourne les résultats de prédiction du Nutri-Score.
+
+## Contributions
+
+Les contributions sont les bienvenues ! Merci de soumettre une `pull request` pour tout ajout ou amélioration.
+
+---
+
+Développé dans le cadre d'un projet de formation en Machine Learning et IA.
