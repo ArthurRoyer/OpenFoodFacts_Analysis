@@ -41,7 +41,6 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
 
 - `app/` : Contient les fichiers de configuration Flask et le code de l'application.
   - `routes.py` : Définit les routes de l'application (prediction et results).
-  - `graphs.py` : Génère les visualisations pour les prédictions.
 - `static/` : Contient les fichiers statiques (CSS, images).
 - `templates/` : Contient les templates HTML pour l’interface utilisateur.
   - `predict.html` : Formulaire pour entrer les données d’un produit.
