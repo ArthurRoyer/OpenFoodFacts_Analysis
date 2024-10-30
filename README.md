@@ -27,7 +27,7 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
     pip install -r requirements.txt
     ```
 
-3. Générez le dataset `cleaned_data.csv` à l'aide des fichiers .ipynb et placez-le dans le répertoire racine de l’application.
+3. Générez le dataset `cleaned_data.csv` à l'aide de data_cleaner.ipynb
 
 4. Exécutez l'application Flask :
 
