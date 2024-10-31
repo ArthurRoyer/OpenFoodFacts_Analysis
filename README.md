@@ -28,14 +28,16 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
     ```
 
 3. Générez le dataset `cleaned_data.csv` à l'aide de data_cleaner.ipynb
+   
+4.  Générez le modèle à l'aide de modele_generator.ipynb
 
-4. Exécutez l'application Flask :
+5. Exécutez l'application Flask :
 
     ```bash
     python run.py
     ```
 
-5. Rendez-vous sur `http://127.0.0.1:5000` dans votre navigateur pour accéder à l’application.
+6. Rendez-vous sur `http://127.0.0.1:5000` dans votre navigateur pour accéder à l’application.
 
 ## Structure du Projet
 
