@@ -60,9 +60,26 @@ Le modèle utilisé pour la prédiction est un **Gradient Boosting Regressor**, 
 2. **Normalisation** : Les caractéristiques sont normalisées via un `MinMaxScaler` pour garantir une échelle uniforme entre les différentes caractéristiques.
 
 3. **Modèle** : Nous avons utilisé un **Gradient Boosting Regressor** avec les hyperparamètres suivants :
-   - `learning_rate=0.05` pour réduire le pas d’apprentissage.
-   - `n_estimators=300` pour augmenter le nombre d’estimateurs.
-   - `max_depth=3` pour limiter la profondeur des arbres et éviter le surapprentissage.
+### Hyperparamètres du modèle GradientBoostingRegressor
+
+- **learning_rate (float)** : Définit le pas d'apprentissage, c'est-à-dire la contribution de chaque arbre aux prédictions finales. Une valeur plus faible (comme `0.1`) réduit le risque de surapprentissage mais peut nécessiter plus d'estimateurs (`n_estimators`).
+
+- **n_estimators (int)** : Nombre d'arbres dans le modèle. Avec `150`, le modèle a un bon équilibre entre précision et complexité, mais il peut nécessiter un ajustement en fonction des performances pour éviter le surapprentissage.
+
+- **max_depth (int)** : Profondeur maximale des arbres individuels. Limiter la profondeur à `3` aide à contrôler la complexité du modèle et réduit le risque de surapprentissage en évitant des arbres trop spécialisés.
+
+- **random_state (int)** : Graines de randomisation pour garantir la reproductibilité des résultats. Avec `14`, les résultats seront identiques à chaque exécution avec les mêmes données.
+
+- **max_features (str ou float)** : Nombre de caractéristiques maximales prises en compte pour chaque arbre. `"sqrt"` sélectionne la racine carrée du nombre total de caractéristiques, ce qui favorise la diversité des arbres et améliore la généralisation.
+
+- **min_samples_leaf (int)** : Nombre minimum d’échantillons requis dans chaque feuille de l’arbre. Une valeur de `5` évite des feuilles trop petites, améliorant la robustesse du modèle aux variations.
+
+- **min_samples_split (int)** : Nombre minimum d'échantillons requis pour diviser un nœud. Avec `20`, cela limite la création de sous-arbres à partir de petites quantités de données, réduisant ainsi le surapprentissage.
+
+- **subsample (float)** : Fraction des données utilisée pour chaque arbre. Une valeur de `0.7` (70%) crée une diversité entre les arbres et agit comme une régularisation pour améliorer la généralisation.
+
+Ces choix d'hyperparamètres ont été sélectionnés pour optimiser la performance du modèle tout en réduisant le risque de surapprentissage, garantissant ainsi une meilleure capacité de généralisation aux données nouvelles.
+
 
 ### Prédiction et Evaluation
 
