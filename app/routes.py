@@ -9,9 +9,8 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 df=pd.read_csv("cleaned_data.csv",sep=',',on_bad_lines='skip', low_memory=False)
 
-
-df = pd.get_dummies(df, columns=['pnns_groups_2'], drop_first=True)
 df=df.drop(['created_datetime','energy-kj_100g','code','nutrition-score-fr_100g','product_name','quantity','brands','categories','categories_en','pnns_groups_1','main_category_en','ingredients_text','countries_en','nutriscore_grade','product_name_lower','brands_lower'], axis = 1)
+df = pd.get_dummies(df, columns=['pnns_groups_2'], drop_first=True)
 X = df.drop("nutriscore_score", axis = 1)
 y = df["nutriscore_score"]
 
@@ -24,17 +23,8 @@ scaler = MinMaxScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-
-# Définition du modèle de Gradient Boosting Regressor avec des hyperparamètres optimisés
-model = GradientBoostingRegressor(
-    learning_rate=0.05,  # Réduit le pas d'apprentissage
-    n_estimators=300,    # Augmente le nombre d'estimateurs pour de meilleures performances
-    max_depth=3,         # Limite la profondeur des arbres pour éviter l'overfitting
-    random_state=23
-)
-
-# Entraînement du modèle sur les données normalisées
-model.fit(X_train_scaled, y_train)
+with open('model.pkl', 'rb') as file:
+    model = pickle.load(file)
 
 main = Blueprint('main', __name__)
 
