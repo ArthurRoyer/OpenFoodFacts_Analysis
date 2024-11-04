@@ -116,3 +116,4 @@ Les contributions sont les bienvenues ! Merci de soumettre une `pull request` po
 ---
 
 Développé dans le cadre d'un projet de formation en Machine Learning et IA.
+https://trello.com/b/Q7za6Yp6/projet-fit-pour-tous
