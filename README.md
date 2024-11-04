@@ -47,7 +47,19 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
 - `templates/` : Contient les templates HTML pour l’interface utilisateur.
   - `predict.html` : Formulaire pour entrer les données d’un produit.
   - `results.html` : Affichage des résultats de la prédiction.
+ 
+    
+## Structure du data cleaner
+Le module data_cleaner sert à télécharger, décompresser et enlever les valeurs non représentatives dans le fichier csv d'open food fact.
+Les étapes de cleans sont : 
+    - Sélectionner les colonnes qui paraissaient pertinentes à première vue.
+    - Supprimer les colonnes vides à 90%
+    - Réunir et sélectionner les lignes avec des pays valides
+    - Suppression des outliers et données abbérantes
+    - Suppresssion des doublons (plusieurs itération du même produits par marque)
+    - Suppression des lignes avec une valeur manquante
 
+    
 ## Modèle de Machine Learning
 
 Le modèle utilisé pour la prédiction est un **Gradient Boosting Regressor**, optimisé pour minimiser l'erreur d'estimation du Nutri-Score. Voici les étapes de préparation des données et d’entraînement du modèle :
@@ -55,11 +67,11 @@ Le modèle utilisé pour la prédiction est un **Gradient Boosting Regressor**, 
 1. **Préparation des données** :
    - Les données d’origine sont chargées depuis un fichier CSV (`cleaned_data.csv`).
    - La colonne cible pour la prédiction est `nutriscore_score`.
-   - Transformation des variables catégorielles avec des variables indicatrices (one-hot encoding) pour améliorer la précision du modèle.
+   - Transformation des variables catégorielles avec des variables indicatrices (one-hot encoding de la colonne pnns_group_2) pour améliorer la précision du modèle.
 
 2. **Normalisation** : Les caractéristiques sont normalisées via un `MinMaxScaler` pour garantir une échelle uniforme entre les différentes caractéristiques.
 
-3. **Modèle** : Nous avons utilisé un **Gradient Boosting Regressor** avec les hyperparamètres suivants :
+3. **Modèle** : Nous avons utilisé un **Gradient Boosting Regressor** avec les hyperparamètres suivants. Ces hypers paramètres ont été sélectionné grâce à halvenGridSearch:
 ### Hyperparamètres du modèle GradientBoostingRegressor
 
 - **learning_rate (float)** : Définit le pas d'apprentissage, c'est-à-dire la contribution de chaque arbre aux prédictions finales. Une valeur plus faible (comme `0.1`) réduit le risque de surapprentissage mais peut nécessiter plus d'estimateurs (`n_estimators`).
@@ -80,6 +92,32 @@ Le modèle utilisé pour la prédiction est un **Gradient Boosting Regressor**, 
 
 Ces choix d'hyperparamètres ont été sélectionnés pour optimiser la performance du modèle tout en réduisant le risque de surapprentissage, garantissant ainsi une meilleure capacité de généralisation aux données nouvelles.
 
+Après affinements de ces choix ,les metrics du modèles sont de :
+    MAE: 1.2570244076612143
+    MSE: 3.385375251864288
+    R²: 0.9561694712256452
+
+    # Gradient Boosting Regressor - Avantages
+
+Le **Gradient Boosting Regressor** est un algorithme de régression puissant, basé sur l'idée d'améliorer successivement la performance d'un ensemble de modèles faibles (typiquement des arbres de décision). Voici les principaux avantages de cet algorithme :
+
+1. **Haute performance prédictive** : En combinant de nombreux modèles faibles, le Gradient Boosting Regressor atteint souvent des résultats de prédiction très précis, surpassant d'autres algorithmes dans de nombreux contextes (comme l'analyse prédictive ou les compétitions de données).
+
+2. **Flexibilité** : Il est adapté aux tâches de régression complexes avec des relations non linéaires entre les variables, car les arbres de décision peuvent capturer des non-linéarités et des interactions entre les caractéristiques.
+
+3. **Robustesse au surapprentissage** : Le Gradient Boosting Regressor applique une régularisation (souvent via le paramètre de taux d’apprentissage), ce qui aide à limiter le surapprentissage, surtout dans les versions modernes comme **XGBoost**, **LightGBM** ou **CatBoost**.
+
+4. **Gestion des données déséquilibrées** : Même avec des distributions de données déséquilibrées, le modèle s'adapte bien en construisant progressivement une combinaison de modèles qui minimise les erreurs résiduelles à chaque itération.
+
+5. **Prise en compte des données manquantes** : Les implémentations modernes, comme **XGBoost** ou **LightGBM**, peuvent gérer des données manquantes sans nécessiter de prétraitement exhaustif.
+
+6. **Personnalisation par hyperparamètres** : Le Gradient Boosting Regressor propose de nombreux paramètres de réglage, permettant d'optimiser finement le modèle (taux d’apprentissage, profondeur des arbres, nombre d’itérations, etc.).
+
+7. **Résilience aux valeurs aberrantes** : Basé sur des arbres de décision, le modèle est relativement peu sensible aux valeurs aberrantes et aux caractéristiques bruitées, en se concentrant sur la réduction des erreurs globales.
+
+8. **Utilisation efficace de la mémoire** : Bien que les modèles d'ensemble d'arbres puissent être lourds, le Gradient Boosting est souvent plus efficace en mémoire que d’autres techniques d'ensemble comme les forêts aléatoires, car il optimise progressivement sans nécessiter un stockage massif de modèles.
+
+En somme, le Gradient Boosting Regressor est un outil polyvalent et performant, idéal pour des problèmes de régression complexes nécessitant des prédictions fiables et optimisées.
 
 ### Prédiction et Evaluation
 
@@ -113,7 +151,7 @@ Le fichier `routes.py` contient l’API pour les fonctionnalités principales :
 - **Route `/`** : Renvoie la page d’accueil avec les graphiques de visualisation.
 - **Route `/predict`** : Affiche le formulaire de prédiction.
 - **Route `/results`** : Prend les données du formulaire et retourne les résultats de prédiction du Nutri-Score.
-
+- **Route `\api\predict`** : Utilisation d'un POST dans Postman avec en Body un JSON de test pour tester l'appli. Celle ci renvoi un Json de réponse.
 ## Contributions
 
 Les contributions sont les bienvenues ! Merci de soumettre une `pull request` pour tout ajout ou amélioration.
