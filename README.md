@@ -97,7 +97,7 @@ Après affinements de ces choix ,les metrics du modèles sont de :
     MSE: 3.385375251864288
     R²: 0.9561694712256452
 
-###Gradient Boosting Regressor : Avantages###
+### Gradient Boosting Regressor : Avantages ###
 
 Le **Gradient Boosting Regressor** est un algorithme de régression puissant, basé sur l'idée d'améliorer successivement la performance d'un ensemble de modèles faibles (typiquement des arbres de décision). Voici les principaux avantages de cet algorithme :
 
