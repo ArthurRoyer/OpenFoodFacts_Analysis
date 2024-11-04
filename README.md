@@ -90,11 +90,16 @@ Le modèle effectue une prédiction du score, qui est ensuite converti en une le
    - `D` : 11 <= score <= 18
    - `E` : score > 18
 
+### Tests de corrélation
+
+Des tests de corrélation ont été effectués pour analyser les relations entre les différentes variables nutritionnelles. Cela permet de repérer les variables qui présentent des dépendances ou des similitudes importantes, aidant à simplifier le modèle tout en conservant les informations les plus pertinentes. Une heatmap de corrélation est notamment utilisée pour visualiser l’intensité des relations, et une Analyse en Composantes Principales (ACP) est également appliquée pour réduire la dimensionnalité des données. ​
+
 ### Résultats
 
 Les résultats de la prédiction sont affichés sous la forme :
 - **Score prédictif** : Un score numérique est affiché pour l’utilisateur, en fonction des données saisies.
 - **Nutri-Score** : La note Nutri-Score est donnée sous forme de lettre (A à E), permettant une évaluation rapide et claire.
+
 
 ## Interface Utilisateur
 
