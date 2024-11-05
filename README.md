@@ -151,7 +151,7 @@ Le fichier `routes.py` contient l’API pour les fonctionnalités principales :
 - **Route `/`** : Renvoie la page d’accueil avec les graphiques de visualisation.
 - **Route `/predict`** : Affiche le formulaire de prédiction.
 - **Route `/results`** : Prend les données du formulaire et retourne les résultats de prédiction du Nutri-Score.
-- **Route `\api\predict`** : Utilisation d'un POST dans Postman avec en Body un JSON de test pour tester l'appli. Celle ci renvoi un Json de réponse.
+- **Route `/api/predict`** : Utilisation d'un POST dans Postman avec en Body un JSON de test pour tester l'appli. Celle ci renvoi un Json de réponse.
 ## Contributions
 
 Les contributions sont les bienvenues ! Merci de soumettre une `pull request` pour tout ajout ou amélioration.
