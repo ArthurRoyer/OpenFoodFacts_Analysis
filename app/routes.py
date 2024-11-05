@@ -10,7 +10,11 @@ from sklearn.ensemble import GradientBoostingRegressor
 
 df=pd.read_csv("cleaned_data.csv",sep=',',on_bad_lines='skip', low_memory=False)
 
-df=df.drop(['created_datetime','energy-kj_100g','code','nutrition-score-fr_100g','product_name','quantity','brands','categories','categories_en','pnns_groups_1','main_category_en','ingredients_text','countries_en','nutriscore_grade','product_name_lower','brands_lower'], axis = 1)
+df = df.drop(['created_datetime', 'energy-kj_100g', 'code', 'nutrition-score-fr_100g', 
+              'product_name', 'quantity', 'brands', 'categories', 'categories_en', 
+              'pnns_groups_1', 'main_category_en', 'ingredients_text', 'countries_en', 
+              'nutriscore_grade', 'product_name_lower', 'brands_lower', 'fat_100g'], axis=1)
+
 df = pd.get_dummies(df, columns=['pnns_groups_2'], drop_first=True)
 X = df.drop("nutriscore_score", axis = 1)
 y = df["nutriscore_score"]
@@ -24,8 +28,21 @@ scaler = MinMaxScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
+# Réentraînement du modèle
+model = GradientBoostingRegressor(random_state=42)
+model.fit(X_train_scaled, y_train)
+
+# Sauvegarde du nouveau modèle et du scaler
+with open('model.pkl', 'wb') as file:
+    pickle.dump(model, file)
+with open('scaler.pkl', 'wb') as file:
+    pickle.dump(scaler, file)
+
+# Chargement du modèle et du scaler
 with open('model.pkl', 'rb') as file:
     model = pickle.load(file)
+with open('scaler.pkl', 'rb') as file:
+    scaler = pickle.load(file)
 
 main = Blueprint('main', __name__)
 
@@ -43,51 +60,57 @@ def score_to_grade(score):
 
 # Mapping des catégories à leurs indices dans le tableau new_data
 category_mapping = {
-    "pnns_groups_2_Appetizers": 8,
-    "pnns_groups_2_Artificially_sweetened_beverages": 9,
-    "pnns_groups_2_Biscuits_and_cakes": 10,
-    "pnns_groups_2_Bread": 11,
-    "pnns_groups_2_Breakfast_cereals": 12,
-    "pnns_groups_2_Cereals": 13,
-    "pnns_groups_2_Cheese": 14,
-    "pnns_groups_2_Chocolate_products": 15,
-    "pnns_groups_2_Dairy_desserts": 16,
-    "pnns_groups_2_Dressings_and_sauces": 17,
-    "pnns_groups_2_Dried_fruits": 18,
-    "pnns_groups_2_Eggs": 19,
-    "pnns_groups_2_Fats": 20,
-    "pnns_groups_2_Fish_and_seafood": 21,
-    "pnns_groups_2_Fruit_juices": 22,
-    "pnns_groups_2_Fruit_nectars": 23,
-    "pnns_groups_2_Fruits": 24,
-    "pnns_groups_2_Ice_cream": 25,
-    "pnns_groups_2_Legumes": 26,
-    "pnns_groups_2_Meat": 27,
-    "pnns_groups_2_Milk_and_yogurt": 28,
-    "pnns_groups_2_Nuts": 29,
-    "pnns_groups_2_Offals": 30,
-    "pnns_groups_2_One_dish_meals": 31,
-    "pnns_groups_2_Pastries": 32,
-    "pnns_groups_2_Pizza_pies_and_quiches": 33,
-    "pnns_groups_2_Plant_based_milk_substitutes": 34,
-    "pnns_groups_2_Potatoes": 35,
-    "pnns_groups_2_Processed_meat": 36,
-    "pnns_groups_2_Salty_and_fatty_products": 37,
-    "pnns_groups_2_Sandwiches": 38,
-    "pnns_groups_2_Soups": 39,
-    "pnns_groups_2_Sweetened_beverages": 40,
-    "pnns_groups_2_Sweets": 41,
-    "pnns_groups_2_Teas_and_herbal_teas_and_coffees": 42,
-    "pnns_groups_2_Unsweetened_beverages": 43,
-    "pnns_groups_2_Vegetables": 44,
-    "pnns_groups_2_Waters_and_flavored_waters": 45,
-    "pnns_groups_2_unknown": 46
+    "pnns_groups_2_Appetizers": 7,
+    "pnns_groups_2_Artificially_sweetened_beverages": 8,
+    "pnns_groups_2_Biscuits_and_cakes": 9,
+    "pnns_groups_2_Bread": 10,
+    "pnns_groups_2_Breakfast_cereals": 11,
+    "pnns_groups_2_Cereals": 12,
+    "pnns_groups_2_Cheese": 13,
+    "pnns_groups_2_Chocolate_products": 14,
+    "pnns_groups_2_Dairy_desserts": 15,
+    "pnns_groups_2_Dressings_and_sauces": 16,
+    "pnns_groups_2_Dried_fruits": 17,
+    "pnns_groups_2_Eggs": 18,
+    "pnns_groups_2_Fats": 19,
+    "pnns_groups_2_Fish_and_seafood": 20,
+    "pnns_groups_2_Fruit_juices": 21,
+    "pnns_groups_2_Fruit_nectars": 22,
+    "pnns_groups_2_Fruits": 23,
+    "pnns_groups_2_Ice_cream": 24,
+    "pnns_groups_2_Legumes": 25,
+    "pnns_groups_2_Meat": 26,
+    "pnns_groups_2_Milk_and_yogurt": 27,
+    "pnns_groups_2_Nuts": 28,
+    "pnns_groups_2_Offals": 29,
+    "pnns_groups_2_One_dish_meals": 30,
+    "pnns_groups_2_Pastries": 31,
+    "pnns_groups_2_Pizza_pies_and_quiches": 32,
+    "pnns_groups_2_Plant_based_milk_substitutes": 33,
+    "pnns_groups_2_Potatoes": 34,
+    "pnns_groups_2_Processed_meat": 35,
+    "pnns_groups_2_Salty_and_fatty_products": 36,
+    "pnns_groups_2_Sandwiches": 37,
+    "pnns_groups_2_Soups": 38,
+    "pnns_groups_2_Sweetened_beverages": 39,
+    "pnns_groups_2_Sweets": 40,
+    "pnns_groups_2_Teas_and_herbal_teas_and_coffees": 41,
+    "pnns_groups_2_Unsweetened_beverages": 42,
+    "pnns_groups_2_Vegetables": 43,
+    "pnns_groups_2_Waters_and_flavored_waters": 44,
+    "pnns_groups_2_unknown": 45
 }
 
 # Ajouter cette fonction au début du fichier, après les imports et avant les routes
 def parse_input(value, nom):
     global df
-    return df[nom].median() if value == "" else float(value)
+    try:
+        if value is None or value == "" or value == "NaN":
+            return df[nom].median()
+        return float(value)
+    except (ValueError, KeyError):
+        # Retourner une valeur par défaut si la colonne n'existe pas
+        return 0.0
 
 @main.route('/')
 def dashboard():
@@ -102,7 +125,6 @@ def predict():
 def results():
     # Récupérer et traiter les valeurs des champs du formulaire
     energy_kcal = parse_input(request.form.get('energy-kcal'),'energy-kcal_100g')
-    fat = parse_input(request.form.get('fat'),'fat_100g')
     saturated_fat = parse_input(request.form.get('saturated-fat'),'saturated-fat_100g')
     sugars = parse_input(request.form.get('sugars'), 'sugars_100g')
     fiber = parse_input(request.form.get('fiber'), 'fiber_100g')
@@ -112,7 +134,7 @@ def results():
     selected_name = request.form.get('selected_name')
 
     # Initialiser les valeurs de new_data
-    new_data = np.array([[energy_kcal, fat, saturated_fat, sugars, fiber, proteins, salt, fruits_vegetables_nuts_estimate] + [0] * 39])
+    new_data = np.array([[energy_kcal, saturated_fat, sugars, fiber, proteins, salt, fruits_vegetables_nuts_estimate] + [0] * 39])
 
     # Activer l’indice correspondant à la catégorie sélectionnée
     if selected_name in category_mapping:
@@ -138,7 +160,7 @@ def predict_api():
         data = request.get_json()
         
         # Validation des données
-        required_fields = ['energy-kcal', 'fat', 'saturated-fat', 'sugars', 
+        required_fields = ['energy-kcal', 'saturated-fat', 'sugars', 
                          'fiber', 'proteins', 'salt', 
                          'fruits-vegetables-nuts-estimate-from-ingredients',
                          'selected_name']
@@ -149,7 +171,6 @@ def predict_api():
 
         # Traitement des données
         energy_kcal = parse_input(str(data['energy-kcal']), 'energy-kcal_100g')
-        fat = parse_input(str(data['fat']), 'fat_100g')
         saturated_fat = parse_input(str(data['saturated-fat']), 'saturated-fat_100g')
         sugars = parse_input(str(data['sugars']), 'sugars_100g')
         fiber = parse_input(str(data['fiber']), 'fiber_100g')
@@ -161,8 +182,8 @@ def predict_api():
         )
         selected_name = data['selected_name']
 
-        # Création du tableau de données
-        new_data = np.array([[energy_kcal, fat, saturated_fat, sugars, fiber, 
+        # Création du tableau de données (sans fat)
+        new_data = np.array([[energy_kcal, saturated_fat, sugars, fiber, 
                              proteins, salt, fruits_vegetables_nuts_estimate] + [0] * 39])
 
         # Activation de la catégorie sélectionnée
